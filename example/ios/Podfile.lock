@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - metrix (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `.symlinks/flutter/ios`)
+  - metrix (from `.symlinks/plugins/metrix/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: ".symlinks/flutter/ios"
+  metrix:
+    :path: ".symlinks/plugins/metrix/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
+  metrix: ac07f118a3f24b0ea507e5705e75e67f7db74284
+
+PODFILE CHECKSUM: aff02bfeed411c636180d6812254b2daeea14d09
+
+COCOAPODS: 1.5.3
