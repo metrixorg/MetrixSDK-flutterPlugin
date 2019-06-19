@@ -1,7 +1,7 @@
 name: metrix
-description: A new Flutter plugin.
+description: Metrix flutter plugin.
 version: 0.9.2
-author: metrix <ff@aa.com>
+author: metrixir <admin@metrix.ir>
 homepage: https://metrix.ir
 
 environment:
