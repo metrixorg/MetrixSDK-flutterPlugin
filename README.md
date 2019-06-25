@@ -1,3 +1,13 @@
-# MetrixSDK Flutter plugin
 
-Installation: https://pub.dev/packages/metrix
+## MetrixSDK Flutter Plugin [![pub package](https://img.shields.io/pub/v/metrix.svg)](https://pub.dartlang.org/packages/metrix)
+
+<div dir="rtl">
+  
+پلاگین فلاتر sdk متریکس، اطلاعات بیشتر در [متریکس](https://metrix.ir).
+  
+
+<h2>راه اندازی</h2>
+
+برای راه اندازی میتوانید از مستندات [اینجا](https://metrix.ir/docs/sdk/flutter) استفاده نماید. 
+
+</div>
