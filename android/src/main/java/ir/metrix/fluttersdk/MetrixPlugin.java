@@ -99,6 +99,19 @@ public class MetrixPlugin implements MethodCallHandler {
                 result.success(null);
 
                 break;
+            case "setAppSecret":
+
+                Long secretId = Long.parseLong(call.argument("secretId").toString());
+                Long info1 = Long.parseLong(call.argument("info1").toString());
+                Long info2 = Long.parseLong(call.argument("info2").toString());
+                Long info3 = Long.parseLong(call.argument("info3").toString());
+                Long info4 = Long.parseLong(call.argument("info4").toString());
+
+
+                Metrix.getInstance().setAppSecret(secretId, info1, info2, info3, info4);
+                result.success(null);
+
+                break;
             default:
                 result.notImplemented();
                 break;
