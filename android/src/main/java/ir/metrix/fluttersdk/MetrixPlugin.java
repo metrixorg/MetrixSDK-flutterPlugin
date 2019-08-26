@@ -54,6 +54,11 @@ public class MetrixPlugin implements MethodCallHandler {
                 Metrix.getInstance().setDefaultTracker(trackerToken);
                 result.success(null);
                 break;
+            case "setStore":
+                String store = call.argument("store");
+                Metrix.getInstance().setStore(store);
+                result.success(null);
+                break;
             case "newRevenue": {
                 String slug = call.argument("slug");
                 Double amount = call.argument("amount");

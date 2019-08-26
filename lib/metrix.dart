@@ -49,4 +49,10 @@ class Metrix {
     });
     return;
   }
+  static Future<void> setStore(String store) async {
+    await _channel.invokeMethod('setStore', <String, dynamic>{
+      'store': store
+      });
+    return;
+  }
 }
