@@ -1,6 +1,6 @@
 PODS:
   - Flutter (1.0.0)
-  - metrix (0.0.1):
+  - metrix (0.9.2):
     - Flutter
 
 DEPENDENCIES:
@@ -14,9 +14,9 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/metrix/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
-  metrix: ac07f118a3f24b0ea507e5705e75e67f7db74284
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  metrix: f10e62c8c74fbcd8a42228d5999dad717baee475
 
 PODFILE CHECKSUM: aff02bfeed411c636180d6812254b2daeea14d09
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.7.5

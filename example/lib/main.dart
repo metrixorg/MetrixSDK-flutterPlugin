@@ -32,11 +32,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   void press() {
-    Map<String, String> attr = new Map();
-    attr["phone"] = "09121234123";
-    Map<String, double> metric = new Map();
-    metric["length"] = 43.3;
-
-    Metrix.newEvent("dmldm", attr, metric);
+    Metrix.newRevenue("dmldm", 34400, 0,null);
   }
 }

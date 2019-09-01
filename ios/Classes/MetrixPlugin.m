@@ -34,6 +34,23 @@
         MXCustomEvent *event = [MXCustomEvent newEvent:slug attributes:myAttributes metrics:myMetrics];
         [Metrix trackCustomEvent:event];
         result(nil);
+    }else if([@"newRevenue" isEqualToString:call.method]){
+        NSString *slug = call.arguments[@"slug"];
+        NSNumber *amount = call.arguments[@"amount"];
+        int currency = call.arguments[@"currency"];
+        NSString *orderId = call.arguments[@"orderId"];
+        MXCurrency cur = IRR;
+        
+        if (currency == 0) {
+            cur = IRR;
+        } else if(currency == 1) {
+            cur = USD;
+        }else if(currency == 2) {
+            cur = EUR;
+        }
+        
+        [Metrix trackRevenue:slug withValue:amount currency:cur orderId:orderId];
+        result(nil);
     }
     
     else {
