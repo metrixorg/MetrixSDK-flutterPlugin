@@ -32,5 +32,4 @@ android {
 }
 dependencies {
     implementation 'ir.metrix:flutter:0.11.0'
-    implementation 'com.google.android.gms:play-services-analytics:16.0.7'
 }
