@@ -2,3 +2,5 @@
 create flutter plugin
 ## 0.11.0
 add app secret
+## 0.11.1
+remove hardcode analytics dependency
