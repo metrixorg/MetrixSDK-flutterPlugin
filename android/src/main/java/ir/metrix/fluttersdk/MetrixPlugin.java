@@ -39,11 +39,12 @@ public class MetrixPlugin implements MethodCallHandler {
                 String appId = call.argument("appId");
                 Metrix.initialize(activity, appId);
                 result.success(null);
+
                 break;
             case "newEvent": {
                 String slug = call.argument("slug");
-                Map attr = call.argument("attributes");
-                Map metrics = call.argument("metrics");
+                Map<String, String> attr = call.argument("attributes");
+                Map<String, Double> metrics = call.argument("metrics");
 
                 Metrix.getInstance().newEvent(slug, attr, metrics);
                 result.success(null);
