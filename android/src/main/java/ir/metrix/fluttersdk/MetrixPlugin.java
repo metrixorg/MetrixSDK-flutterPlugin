@@ -1,6 +1,12 @@
 package ir.metrix.fluttersdk;
 
 import android.app.Activity;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -10,6 +16,7 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 import ir.metrix.sdk.Metrix;
+import ir.metrix.sdk.MetrixConfig;
 import ir.metrix.sdk.MetrixCurrency;
 
 /**
@@ -34,11 +41,79 @@ public class MetrixPlugin implements MethodCallHandler {
     @Override
     public void onMethodCall(MethodCall call, Result result) {
         switch (call.method) {
-            case "initialize":
+            case "onCreate":
 
-                String appId = call.argument("appId");
-                Metrix.initialize(activity, appId);
+                JSONObject settings = null;
+                try {
+                    settings = new JSONObject(call.arguments.toString());
+
+                MetrixConfig metrixConfig = new MetrixConfig(activity.getApplication(),
+                        settings.getString("appId"));
+
+                if (settings.has("appSecret")) {
+                    JSONObject appSecret = settings.getJSONObject("appSecret");
+                    metrixConfig.setAppSecret(
+                            (appSecret.getLong("secretId")),
+                            (appSecret.getLong("info1")),
+                            (appSecret.getLong("info2")),
+                            (appSecret.getLong("info3")),
+                            (appSecret.getLong("info4")));
+                }
+                if (settings.has("locationListening")) {
+                    metrixConfig.setLocationListening(settings.getBoolean("locationListening"));
+                }
+
+                if (settings.has("eventUploadThreshold")) {
+                    metrixConfig.setEventUploadThreshold(settings.getInt("eventUploadThreshold"));
+                }
+
+                if (settings.has("eventUploadMaxBatchSize")) {
+                    metrixConfig.setEventUploadMaxBatchSize(settings.getInt("eventUploadMaxBatchSize"));
+                }
+
+                if (settings.has("eventMaxCount")) {
+                    metrixConfig.setEventMaxCount(settings.getInt("eventMaxCount"));
+                }
+                if (settings.has("eventUploadPeriodMillis")) {
+                    metrixConfig.setEventUploadPeriodMillis(settings.getInt("eventUploadPeriodMillis"));
+                }
+
+                if (settings.has("sessionTimeoutMillis")) {
+                    metrixConfig.setSessionTimeoutMillis(settings.getInt("sessionTimeoutMillis"));
+                }
+
+                if (settings.has("enableLogging")) {
+                    metrixConfig.enableLogging(settings.getBoolean("enableLogging"));
+                }
+                if (settings.has("logLevel")) {
+                    metrixConfig.setLogLevel(settings.getInt("logLevel"));
+                }
+
+                if (settings.has("flushEventsOnClose")) {
+                    metrixConfig.setFlushEventsOnClose(settings.getBoolean("flushEventsOnClose"));
+
+                }
+
+                if (settings.has("defaultTrackerToken")) {
+                    metrixConfig.setDefaultTrackerToken(settings.getString("defaultTrackerToken"));
+                }
+
+                if (settings.has("store")) {
+                    metrixConfig.setStore(settings.getString("store"));
+                }
+
+
+                Metrix.onCreate(metrixConfig);
+
+                Metrix.getInstance().activityCreated(activity, new Bundle());
+                Metrix.getInstance().activityStarted(activity);
+                Metrix.getInstance().activityResumed(activity);
+
+
                 result.success(null);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
                 break;
             case "newEvent": {
@@ -50,11 +125,6 @@ public class MetrixPlugin implements MethodCallHandler {
                 result.success(null);
                 break;
             }
-            case "setDefaultTracker":
-                String trackerToken = call.argument("trackerToken");
-                Metrix.getInstance().setDefaultTracker(trackerToken);
-                result.success(null);
-                break;
             case "newRevenue": {
                 String slug = call.argument("slug");
                 Double amount = call.argument("amount");
@@ -70,49 +140,6 @@ public class MetrixPlugin implements MethodCallHandler {
                 result.success(null);
                 break;
             }
-            case "screenDisplayed":
-                String screen = call.argument("screen");
-                Metrix.getInstance().screenDisplayed(screen);
-                result.success(null);
-
-                break;
-            case "setEventUploadThreshold":
-                Integer eventUploadThreshold = call.argument("eventUploadThreshold");
-                Metrix.getInstance().setEventUploadThreshold(eventUploadThreshold);
-                result.success(null);
-
-                break;
-            case "setEventMaxCount":
-                Integer eventMaxCount = call.argument("eventMaxCount");
-                Metrix.getInstance().setEventMaxCount(eventMaxCount);
-                result.success(null);
-
-                break;
-            case "setEventUploadMaxBatchSize":
-                Integer eventUploadMaxBatchSize = call.argument("eventUploadMaxBatchSize");
-                Metrix.getInstance().setEventUploadMaxBatchSize(eventUploadMaxBatchSize);
-                result.success(null);
-
-                break;
-            case "setEventUploadPeriodMillis":
-                Integer eventUploadPeriodMillis = call.argument("eventUploadPeriodMillis");
-                Metrix.getInstance().setEventUploadPeriodMillis(eventUploadPeriodMillis);
-                result.success(null);
-
-                break;
-            case "setAppSecret":
-
-                Long secretId = Long.parseLong(call.argument("secretId").toString());
-                Long info1 = Long.parseLong(call.argument("info1").toString());
-                Long info2 = Long.parseLong(call.argument("info2").toString());
-                Long info3 = Long.parseLong(call.argument("info3").toString());
-                Long info4 = Long.parseLong(call.argument("info4").toString());
-
-
-                Metrix.getInstance().setAppSecret(secretId, info1, info2, info3, info4);
-                result.success(null);
-
-                break;
             default:
                 result.notImplemented();
                 break;

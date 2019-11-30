@@ -1,13 +1,23 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'dart:io' show Platform;
+
+import 'package:metrix/MetrixConfig.dart';
+
 
 class Metrix {
   static const MethodChannel _channel = const MethodChannel('metrix');
 
-  static Future<void> initialize(String appId) async {
-    await _channel
-        .invokeMethod('initialize', <String, dynamic>{'appId': appId});
+  static Future<void> initialize(MetrixConfig config) async {
+
+    if(!Platform.isAndroid) {
+      await _channel
+          .invokeMethod('initialize', <String, dynamic>{'appId': config.appId});
+    } else {
+      await _channel
+          .invokeMethod('initialize', config.toJson());
+    }
     return;
   }
 
@@ -18,12 +28,6 @@ class Metrix {
       'attributes': attributes,
       'metrics': metrics
     });
-    return;
-  }
-
-  static Future<void> setDefaultTracker(String trackerToken) async {
-    await _channel.invokeMethod(
-        'setDefaultTracker', <String, dynamic>{'trackerToken': trackerToken});
     return;
   }
 
@@ -38,15 +42,4 @@ class Metrix {
     return;
   }
 
-  static Future<void> setAppSecret(
-      int secretId, int info1, int info2, int info3, int info4) async {
-    await _channel.invokeMethod('setAppSecret', <String, dynamic>{
-      'secretId': secretId,
-      'info1': info1,
-      'info2': info2,
-      'info3': info3,
-      'info4': info4
-    });
-    return;
-  }
 }

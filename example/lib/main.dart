@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:metrix/metrix.dart';
+import 'package:metrix/MetrixConfig.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,7 +17,12 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    Metrix.initialize("ilhskoifzdmyhhk");
+    MetrixConfig config = new MetrixConfig("ilhskoifzdmyhhk");
+    config.setAppSecret(23, 23124342342, 32432432, 34234, 2322222);
+    config.store = "dfff";
+    config.trackerToken = "rtret";
+    Metrix.initialize(config);
+
   }
 
   @override
