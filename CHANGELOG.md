@@ -8,3 +8,5 @@ remove hardcode analytics dependency
 fix unchecked error
 ## 0.13.0
 use metrixConfig instead initialize
+## 0.13.1
+fix bug appSecret
