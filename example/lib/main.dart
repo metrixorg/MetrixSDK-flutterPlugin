@@ -3,7 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:metrix/metrix.dart';
-import 'package:metrix/MetrixConfig.dart';
+import 'package:metrix/metrixConfig.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,9 +19,9 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     MetrixConfig config = new MetrixConfig("ilhskoifzdmyhhk");
     config.setAppSecret(23, 23124342342, 32432432, 34234, 2322222);
-    config.store = "dfff";
+    config.store = "google play";
     config.trackerToken = "rtret";
-    Metrix.initialize(config);
+    Metrix.onCreate(config);
 
   }
 

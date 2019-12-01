@@ -3,20 +3,20 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'dart:io' show Platform;
 
-import 'package:metrix/MetrixConfig.dart';
+import 'package:metrix/metrixConfig.dart';
 
 
 class Metrix {
   static const MethodChannel _channel = const MethodChannel('metrix');
 
-  static Future<void> initialize(MetrixConfig config) async {
+  static Future<void> onCreate(MetrixConfig config) async {
 
     if(!Platform.isAndroid) {
       await _channel
           .invokeMethod('initialize', <String, dynamic>{'appId': config.appId});
     } else {
       await _channel
-          .invokeMethod('initialize', config.toJson());
+          .invokeMethod('onCreate', config.toJson());
     }
     return;
   }

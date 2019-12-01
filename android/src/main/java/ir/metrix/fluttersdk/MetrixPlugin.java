@@ -50,7 +50,7 @@ public class MetrixPlugin implements MethodCallHandler {
                 MetrixConfig metrixConfig = new MetrixConfig(activity.getApplication(),
                         settings.getString("appId"));
 
-                if (settings.has("appSecret")) {
+                if (settings.has("appSecret") && settings.get("appSecret") != JSONObject.NULL) {
                     JSONObject appSecret = settings.getJSONObject("appSecret");
                     metrixConfig.setAppSecret(
                             (appSecret.getLong("secretId")),
@@ -59,46 +59,46 @@ public class MetrixPlugin implements MethodCallHandler {
                             (appSecret.getLong("info3")),
                             (appSecret.getLong("info4")));
                 }
-                if (settings.has("locationListening")) {
+                if (settings.has("locationListening") && settings.get("locationListening") != JSONObject.NULL) {
                     metrixConfig.setLocationListening(settings.getBoolean("locationListening"));
                 }
 
-                if (settings.has("eventUploadThreshold")) {
+                if (settings.has("eventUploadThreshold") && settings.get("eventUploadThreshold") != JSONObject.NULL) {
                     metrixConfig.setEventUploadThreshold(settings.getInt("eventUploadThreshold"));
                 }
 
-                if (settings.has("eventUploadMaxBatchSize")) {
+                if (settings.has("eventUploadMaxBatchSize") && settings.get("eventUploadMaxBatchSize") != JSONObject.NULL) {
                     metrixConfig.setEventUploadMaxBatchSize(settings.getInt("eventUploadMaxBatchSize"));
                 }
 
-                if (settings.has("eventMaxCount")) {
+                if (settings.has("eventMaxCount") && settings.get("eventMaxCount") != JSONObject.NULL) {
                     metrixConfig.setEventMaxCount(settings.getInt("eventMaxCount"));
                 }
-                if (settings.has("eventUploadPeriodMillis")) {
+                if (settings.has("eventUploadPeriodMillis") && settings.get("eventUploadPeriodMillis") != JSONObject.NULL) {
                     metrixConfig.setEventUploadPeriodMillis(settings.getInt("eventUploadPeriodMillis"));
                 }
 
-                if (settings.has("sessionTimeoutMillis")) {
+                if (settings.has("sessionTimeoutMillis") && settings.get("sessionTimeoutMillis") != JSONObject.NULL) {
                     metrixConfig.setSessionTimeoutMillis(settings.getInt("sessionTimeoutMillis"));
                 }
 
-                if (settings.has("enableLogging")) {
-                    metrixConfig.enableLogging(settings.getBoolean("enableLogging"));
+                if (settings.has("loggingEnabled") && settings.get("loggingEnabled") != JSONObject.NULL) {
+                    metrixConfig.enableLogging(settings.getBoolean("loggingEnabled"));
                 }
-                if (settings.has("logLevel")) {
+                if (settings.has("logLevel") && settings.get("logLevel") != JSONObject.NULL) {
                     metrixConfig.setLogLevel(settings.getInt("logLevel"));
                 }
 
-                if (settings.has("flushEventsOnClose")) {
+                if (settings.has("flushEventsOnClose") && settings.get("flushEventsOnClose") != JSONObject.NULL) {
                     metrixConfig.setFlushEventsOnClose(settings.getBoolean("flushEventsOnClose"));
 
                 }
 
-                if (settings.has("defaultTrackerToken")) {
-                    metrixConfig.setDefaultTrackerToken(settings.getString("defaultTrackerToken"));
+                if (settings.has("trackerToken") && settings.get("trackerToken") != JSONObject.NULL) {
+                    metrixConfig.setDefaultTrackerToken(settings.getString("trackerToken"));
                 }
 
-                if (settings.has("store")) {
+                if (settings.has("store") && settings.get("store") != JSONObject.NULL) {
                     metrixConfig.setStore(settings.getString("store"));
                 }
 
