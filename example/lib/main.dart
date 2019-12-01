@@ -18,9 +18,9 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     MetrixConfig config = new MetrixConfig("ilhskoifzdmyhhk");
-    config.setAppSecret(23, 23124342342, 32432432, 34234, 2322222);
-    config.store = "google play";
-    config.trackerToken = "rtret";
+//    config.setAppSecret(23, 23124342342, 32432432, 34234, 2322222);
+//    config.store = "google play";
+//    config.trackerToken = "rtret";
     Metrix.onCreate(config);
 
   }

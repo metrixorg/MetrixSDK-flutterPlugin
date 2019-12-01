@@ -47,70 +47,75 @@ public class MetrixPlugin implements MethodCallHandler {
                 try {
                     settings = new JSONObject(call.arguments.toString());
 
-                MetrixConfig metrixConfig = new MetrixConfig(activity.getApplication(),
-                        settings.getString("appId"));
+                    MetrixConfig metrixConfig = new MetrixConfig(activity.getApplication(),
+                            settings.getString("appId"));
 
-                if (settings.has("appSecret") && settings.get("appSecret") != JSONObject.NULL) {
-                    JSONObject appSecret = settings.getJSONObject("appSecret");
-                    metrixConfig.setAppSecret(
-                            (appSecret.getLong("secretId")),
-                            (appSecret.getLong("info1")),
-                            (appSecret.getLong("info2")),
-                            (appSecret.getLong("info3")),
-                            (appSecret.getLong("info4")));
-                }
-                if (settings.has("locationListening") && settings.get("locationListening") != JSONObject.NULL) {
-                    metrixConfig.setLocationListening(settings.getBoolean("locationListening"));
-                }
+                    if (settings.has("appSecret") && settings.get("appSecret") != JSONObject.NULL) {
+                        JSONObject appSecret = settings.getJSONObject("appSecret");
+                        if (appSecret.has("secretId") && appSecret.get("secretId") != JSONObject.NULL &&
+                                appSecret.has("info1") && appSecret.get("info1") != JSONObject.NULL &&
+                                appSecret.has("info2") && appSecret.get("info2") != JSONObject.NULL &&
+                                appSecret.has("info3") && appSecret.get("info3") != JSONObject.NULL &&
+                                appSecret.has("info4") && appSecret.get("info4") != JSONObject.NULL)
+                            metrixConfig.setAppSecret(
+                                    (appSecret.getLong("secretId")),
+                                    (appSecret.getLong("info1")),
+                                    (appSecret.getLong("info2")),
+                                    (appSecret.getLong("info3")),
+                                    (appSecret.getLong("info4")));
+                    }
+                    if (settings.has("locationListening") && settings.get("locationListening") != JSONObject.NULL) {
+                        metrixConfig.setLocationListening(settings.getBoolean("locationListening"));
+                    }
 
-                if (settings.has("eventUploadThreshold") && settings.get("eventUploadThreshold") != JSONObject.NULL) {
-                    metrixConfig.setEventUploadThreshold(settings.getInt("eventUploadThreshold"));
-                }
+                    if (settings.has("eventUploadThreshold") && settings.get("eventUploadThreshold") != JSONObject.NULL) {
+                        metrixConfig.setEventUploadThreshold(settings.getInt("eventUploadThreshold"));
+                    }
 
-                if (settings.has("eventUploadMaxBatchSize") && settings.get("eventUploadMaxBatchSize") != JSONObject.NULL) {
-                    metrixConfig.setEventUploadMaxBatchSize(settings.getInt("eventUploadMaxBatchSize"));
-                }
+                    if (settings.has("eventUploadMaxBatchSize") && settings.get("eventUploadMaxBatchSize") != JSONObject.NULL) {
+                        metrixConfig.setEventUploadMaxBatchSize(settings.getInt("eventUploadMaxBatchSize"));
+                    }
 
-                if (settings.has("eventMaxCount") && settings.get("eventMaxCount") != JSONObject.NULL) {
-                    metrixConfig.setEventMaxCount(settings.getInt("eventMaxCount"));
-                }
-                if (settings.has("eventUploadPeriodMillis") && settings.get("eventUploadPeriodMillis") != JSONObject.NULL) {
-                    metrixConfig.setEventUploadPeriodMillis(settings.getInt("eventUploadPeriodMillis"));
-                }
+                    if (settings.has("eventMaxCount") && settings.get("eventMaxCount") != JSONObject.NULL) {
+                        metrixConfig.setEventMaxCount(settings.getInt("eventMaxCount"));
+                    }
+                    if (settings.has("eventUploadPeriodMillis") && settings.get("eventUploadPeriodMillis") != JSONObject.NULL) {
+                        metrixConfig.setEventUploadPeriodMillis(settings.getInt("eventUploadPeriodMillis"));
+                    }
 
-                if (settings.has("sessionTimeoutMillis") && settings.get("sessionTimeoutMillis") != JSONObject.NULL) {
-                    metrixConfig.setSessionTimeoutMillis(settings.getInt("sessionTimeoutMillis"));
-                }
+                    if (settings.has("sessionTimeoutMillis") && settings.get("sessionTimeoutMillis") != JSONObject.NULL) {
+                        metrixConfig.setSessionTimeoutMillis(settings.getInt("sessionTimeoutMillis"));
+                    }
 
-                if (settings.has("loggingEnabled") && settings.get("loggingEnabled") != JSONObject.NULL) {
-                    metrixConfig.enableLogging(settings.getBoolean("loggingEnabled"));
-                }
-                if (settings.has("logLevel") && settings.get("logLevel") != JSONObject.NULL) {
-                    metrixConfig.setLogLevel(settings.getInt("logLevel"));
-                }
+                    if (settings.has("loggingEnabled") && settings.get("loggingEnabled") != JSONObject.NULL) {
+                        metrixConfig.enableLogging(settings.getBoolean("loggingEnabled"));
+                    }
+                    if (settings.has("logLevel") && settings.get("logLevel") != JSONObject.NULL) {
+                        metrixConfig.setLogLevel(settings.getInt("logLevel"));
+                    }
 
-                if (settings.has("flushEventsOnClose") && settings.get("flushEventsOnClose") != JSONObject.NULL) {
-                    metrixConfig.setFlushEventsOnClose(settings.getBoolean("flushEventsOnClose"));
+                    if (settings.has("flushEventsOnClose") && settings.get("flushEventsOnClose") != JSONObject.NULL) {
+                        metrixConfig.setFlushEventsOnClose(settings.getBoolean("flushEventsOnClose"));
 
-                }
+                    }
 
-                if (settings.has("trackerToken") && settings.get("trackerToken") != JSONObject.NULL) {
-                    metrixConfig.setDefaultTrackerToken(settings.getString("trackerToken"));
-                }
+                    if (settings.has("trackerToken") && settings.get("trackerToken") != JSONObject.NULL) {
+                        metrixConfig.setDefaultTrackerToken(settings.getString("trackerToken"));
+                    }
 
-                if (settings.has("store") && settings.get("store") != JSONObject.NULL) {
-                    metrixConfig.setStore(settings.getString("store"));
-                }
-
-
-                Metrix.onCreate(metrixConfig);
-
-                Metrix.getInstance().activityCreated(activity, new Bundle());
-                Metrix.getInstance().activityStarted(activity);
-                Metrix.getInstance().activityResumed(activity);
+                    if (settings.has("store") && settings.get("store") != JSONObject.NULL) {
+                        metrixConfig.setStore(settings.getString("store"));
+                    }
 
 
-                result.success(null);
+                    Metrix.onCreate(metrixConfig);
+
+                    Metrix.getInstance().activityCreated(activity, new Bundle());
+                    Metrix.getInstance().activityStarted(activity);
+                    Metrix.getInstance().activityResumed(activity);
+
+
+                    result.success(null);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
