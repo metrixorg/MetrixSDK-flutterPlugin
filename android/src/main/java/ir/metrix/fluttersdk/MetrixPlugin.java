@@ -1,9 +1,10 @@
 package ir.metrix.fluttersdk;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,6 +19,11 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 import ir.metrix.sdk.Metrix;
 import ir.metrix.sdk.MetrixConfig;
 import ir.metrix.sdk.MetrixCurrency;
+import ir.metrix.sdk.OnAttributionChangedListener;
+import ir.metrix.sdk.OnDeeplinkResponseListener;
+import ir.metrix.sdk.OnReceiveUserIdListener;
+import ir.metrix.sdk.OnSessionIdListener;
+import ir.metrix.sdk.network.model.AttributionModel;
 
 /**
  * MetrixPlugin
@@ -25,6 +31,11 @@ import ir.metrix.sdk.MetrixCurrency;
 public class MetrixPlugin implements MethodCallHandler {
 
     private final Activity activity;
+    private Result sessionIdResult;
+    private Result userIdResult;
+    private Result deeplinkResult;
+    private Result attributionResult;
+    private boolean shouldLunchDeeplink = false;
 
     public MetrixPlugin(Activity activity) {
         this.activity = activity;
@@ -56,16 +67,20 @@ public class MetrixPlugin implements MethodCallHandler {
                                 appSecret.has("info1") && appSecret.get("info1") != JSONObject.NULL &&
                                 appSecret.has("info2") && appSecret.get("info2") != JSONObject.NULL &&
                                 appSecret.has("info3") && appSecret.get("info3") != JSONObject.NULL &&
-                                appSecret.has("info4") && appSecret.get("info4") != JSONObject.NULL)
+                                appSecret.has("info4") && appSecret.get("info4") != JSONObject.NULL) {
                             metrixConfig.setAppSecret(
                                     (appSecret.getLong("secretId")),
                                     (appSecret.getLong("info1")),
                                     (appSecret.getLong("info2")),
                                     (appSecret.getLong("info3")),
                                     (appSecret.getLong("info4")));
+                        }
                     }
                     if (settings.has("locationListening") && settings.get("locationListening") != JSONObject.NULL) {
                         metrixConfig.setLocationListening(settings.getBoolean("locationListening"));
+                    }
+                    if (settings.has("shouldLunchDeeplink") && settings.get("shouldLunchDeeplink") != JSONObject.NULL) {
+                        shouldLunchDeeplink = settings.getBoolean("shouldLunchDeeplink");
                     }
 
                     if (settings.has("eventUploadThreshold") && settings.get("eventUploadThreshold") != JSONObject.NULL) {
@@ -102,11 +117,69 @@ public class MetrixPlugin implements MethodCallHandler {
                     if (settings.has("trackerToken") && settings.get("trackerToken") != JSONObject.NULL) {
                         metrixConfig.setDefaultTrackerToken(settings.getString("trackerToken"));
                     }
+                    if (settings.has("firebaseAppId") && settings.get("firebaseAppId") != JSONObject.NULL) {
+                        metrixConfig.setFirebaseAppId(settings.getString("firebaseAppId").replace("_", ":"));
+                    }
 
                     if (settings.has("store") && settings.get("store") != JSONObject.NULL) {
                         metrixConfig.setStore(settings.getString("store"));
                     }
 
+                    metrixConfig.setOnAttributionChangedListener(new OnAttributionChangedListener() {
+                        @Override
+                        public void onAttributionChanged(AttributionModel attributionModel) {
+                            if (attributionResult != null) {
+                                final String attr = (new Gson()).toJson(attributionModel);
+                                activity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        attributionResult.success(attr);
+                                    }
+                                });
+                            }
+                        }
+                    });
+                    metrixConfig.setOnSessionIdListener(new OnSessionIdListener() {
+                        @Override
+                        public void onReceiveSessionId(final String s) {
+                            if (sessionIdResult != null) {
+                                activity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        sessionIdResult.success(s);
+                                    }
+                                });
+                            }
+                        }
+                    });
+
+                    metrixConfig.setOnReceiveUserIdListener(new OnReceiveUserIdListener() {
+                        @Override
+                        public void onReceiveUserId(final String s) {
+                            if (userIdResult != null) {
+                                activity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        userIdResult.success(s);
+                                    }
+                                });
+                            }
+                        }
+                    });
+                    metrixConfig.setOnDeeplinkResponseListener(new OnDeeplinkResponseListener() {
+                        @Override
+                        public boolean launchReceivedDeeplink(final Uri uri) {
+                            if (deeplinkResult != null) {
+                                activity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        deeplinkResult.success(uri.toString());
+                                    }
+                                });
+                            }
+                            return shouldLunchDeeplink;
+                        }
+                    });
 
                     Metrix.onCreate(metrixConfig);
 
@@ -120,6 +193,18 @@ public class MetrixPlugin implements MethodCallHandler {
                     e.printStackTrace();
                 }
 
+                break;
+            case "setDeeplinkMethod":
+                deeplinkResult = result;
+                break;
+            case "setAttributionMethod":
+                attributionResult = result;
+                break;
+            case "setUserIdMethod":
+                userIdResult = result;
+                break;
+            case "setSessionIdMethod":
+                sessionIdResult = result;
                 break;
             case "newEvent": {
                 String slug = call.argument("slug");

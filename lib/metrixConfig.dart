@@ -1,4 +1,3 @@
-
 class MetrixConfig {
   String appId;
   int _secretId = 0;
@@ -7,7 +6,9 @@ class MetrixConfig {
   int _info3;
   int _info4;
   bool locationListening;
+  bool shouldLunchDeeplink;
   String store;
+  String firebaseAppId;
   int eventUploadThreshold;
 
   int eventUploadMaxBatchSize;
@@ -24,6 +25,11 @@ class MetrixConfig {
   bool loggingEnabled;
 
   bool flushEventsOnClose;
+
+  Function sessionIdCallback;
+  Function userIdCallback;
+  Function attributionCallback;
+  Function deeplinkCallback;
 
   void setAppSecret(int secretId, int info1, int info2, int info3, int info4) {
     this._secretId = secretId;
@@ -46,14 +52,16 @@ class MetrixConfig {
         },
         'locationListening': locationListening,
         'store': store,
-        'eventUploadThreshold ': eventUploadThreshold,
-        'eventUploadMaxBatchSize ': eventUploadMaxBatchSize,
-        'eventMaxCount ': eventMaxCount,
-        'eventUploadPeriodMillis ': eventUploadPeriodMillis,
-        'sessionTimeoutMillis ': sessionTimeoutMillis,
-        'logLevel ': logLevel,
+        'eventUploadThreshold': eventUploadThreshold,
+        'eventUploadMaxBatchSize': eventUploadMaxBatchSize,
+        'eventMaxCount': eventMaxCount,
+        'eventUploadPeriodMillis': eventUploadPeriodMillis,
+        'sessionTimeoutMillis': sessionTimeoutMillis,
+        'logLevel': logLevel,
         'trackerToken': trackerToken,
-        'loggingEnabled ': loggingEnabled,
-        'flushEventsOnClose ': flushEventsOnClose,
+        'loggingEnabled': loggingEnabled,
+        'firebaseAppId': firebaseAppId != null ? "${firebaseAppId.replaceAll(":","_")}" : null,
+        'shouldLunchDeeplink': shouldLunchDeeplink,
+        'flushEventsOnClose': flushEventsOnClose,
       };
 }
