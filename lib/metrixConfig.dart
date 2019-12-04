@@ -6,7 +6,7 @@ class MetrixConfig {
   int _info3;
   int _info4;
   bool locationListening;
-  bool shouldLunchDeeplink;
+  bool lunchDeferredDeeplink;
   String store;
   String firebaseAppId;
   int eventUploadThreshold;
@@ -29,7 +29,7 @@ class MetrixConfig {
   Function sessionIdCallback;
   Function userIdCallback;
   Function attributionCallback;
-  Function deeplinkCallback;
+  Function deferredDeeplinkCallback;
 
   void setAppSecret(int secretId, int info1, int info2, int info3, int info4) {
     this._secretId = secretId;
@@ -61,7 +61,7 @@ class MetrixConfig {
         'trackerToken': trackerToken,
         'loggingEnabled': loggingEnabled,
         'firebaseAppId': firebaseAppId != null ? "${firebaseAppId.replaceAll(":","_")}" : null,
-        'shouldLunchDeeplink': shouldLunchDeeplink,
+        'lunchDeferredDeeplink': lunchDeferredDeeplink,
         'flushEventsOnClose': flushEventsOnClose,
       };
 }

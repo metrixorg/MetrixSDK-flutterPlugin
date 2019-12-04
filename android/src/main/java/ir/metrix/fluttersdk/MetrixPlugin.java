@@ -33,9 +33,9 @@ public class MetrixPlugin implements MethodCallHandler {
     private final Activity activity;
     private Result sessionIdResult;
     private Result userIdResult;
-    private Result deeplinkResult;
+    private Result deferredDeeplinkResult;
     private Result attributionResult;
-    private boolean shouldLunchDeeplink = false;
+    private boolean lunchDeferredDeeplink = false;
 
     public MetrixPlugin(Activity activity) {
         this.activity = activity;
@@ -79,8 +79,8 @@ public class MetrixPlugin implements MethodCallHandler {
                     if (settings.has("locationListening") && settings.get("locationListening") != JSONObject.NULL) {
                         metrixConfig.setLocationListening(settings.getBoolean("locationListening"));
                     }
-                    if (settings.has("shouldLunchDeeplink") && settings.get("shouldLunchDeeplink") != JSONObject.NULL) {
-                        shouldLunchDeeplink = settings.getBoolean("shouldLunchDeeplink");
+                    if (settings.has("lunchDeferredDeeplink") && settings.get("lunchDeferredDeeplink") != JSONObject.NULL) {
+                        lunchDeferredDeeplink = settings.getBoolean("lunchDeferredDeeplink");
                     }
 
                     if (settings.has("eventUploadThreshold") && settings.get("eventUploadThreshold") != JSONObject.NULL) {
@@ -169,15 +169,15 @@ public class MetrixPlugin implements MethodCallHandler {
                     metrixConfig.setOnDeeplinkResponseListener(new OnDeeplinkResponseListener() {
                         @Override
                         public boolean launchReceivedDeeplink(final Uri uri) {
-                            if (deeplinkResult != null) {
+                            if (deferredDeeplinkResult != null) {
                                 activity.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        deeplinkResult.success(uri.toString());
+                                        deferredDeeplinkResult.success(uri.toString());
                                     }
                                 });
                             }
-                            return shouldLunchDeeplink;
+                            return lunchDeferredDeeplink;
                         }
                     });
 
@@ -194,8 +194,8 @@ public class MetrixPlugin implements MethodCallHandler {
                 }
 
                 break;
-            case "setDeeplinkMethod":
-                deeplinkResult = result;
+            case "setDeferredDeeplinkMethod":
+                deferredDeeplinkResult = result;
                 break;
             case "setAttributionMethod":
                 attributionResult = result;
@@ -227,6 +227,26 @@ public class MetrixPlugin implements MethodCallHandler {
                     metrixCurrency = MetrixCurrency.EUR;
 
                 Metrix.getInstance().newRevenue(slug, amount, metrixCurrency, orderId);
+                result.success(null);
+                break;
+            }
+
+            case "addUserAttributes": {
+                Map<String, String> attr = call.argument("attributes");
+                Metrix.getInstance().addUserAttributes(attr);
+                result.success(null);
+                break;
+            }
+
+            case "addUserMetrics": {
+                Map<String, Double> metrics = call.argument("metrics");
+                Metrix.getInstance().addUserMetrics(metrics);
+                result.success(null);
+                break;
+            }
+            case "appWillOpenUrl": {
+                String uri = call.argument("uri");
+                Metrix.getInstance().appWillOpenUrl(Uri.parse(uri));
                 result.success(null);
                 break;
             }

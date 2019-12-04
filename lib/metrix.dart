@@ -14,9 +14,9 @@ class Metrix {
       await _channel
           .invokeMethod('initialize', <String, dynamic>{'appId': config.appId});
     } else {
-      if (config.deeplinkCallback != null)
-        _channel.invokeMethod("setDeeplinkMethod", "").then((onVal) {
-          config.deeplinkCallback(onVal);
+      if (config.deferredDeeplinkCallback != null)
+        _channel.invokeMethod("setDeferredDeeplinkMethod", "").then((onVal) {
+          config.deferredDeeplinkCallback(onVal);
         });
       if (config.attributionCallback != null)
         _channel.invokeMethod("setAttributionMethod", "").then((onVal) {
@@ -42,6 +42,28 @@ class Metrix {
       'slug': slug,
       'attributes': attributes,
       'metrics': metrics
+    });
+    return;
+  }
+
+
+  static Future<void> addUserAttributes(Map<String, String> attributes) async {
+    await _channel.invokeMethod('addUserAttributes', <String, dynamic>{
+      'attributes': attributes
+    });
+    return;
+  }
+
+  static Future<void> addUserMetrics(Map<String, double> metrics) async {
+    await _channel.invokeMethod('addUserMetrics', <String, dynamic>{
+       'metrics': metrics
+    });
+    return;
+  }
+
+  static Future<void> appWillOpenUrl(String url) async {
+    await _channel.invokeMethod('appWillOpenUrl', <String, dynamic>{
+      'uri': url
     });
     return;
   }

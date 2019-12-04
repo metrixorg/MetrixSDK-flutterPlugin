@@ -20,7 +20,7 @@ class _MyAppState extends State<MyApp> {
 //    config.setAppSecret(23, 23124342342, 32432432, 34234, 2322222);
 //    config.store = "google play";
 //    config.trackerToken = "rtret";
-    config.sessionIdCallback = (sesid) => {ss(sesid)};
+    config.sessionIdCallback = ss;
     config.deeplinkCallback = (sesid) => {print("deeplink: " + sesid)};
     config.userIdCallback = (sesid) => {print("userid: " + sesid)};
     config.attributionCallback = (sesid) => {print("att: " + jsonEncode(sesid))};
