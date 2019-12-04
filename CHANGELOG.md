@@ -10,3 +10,5 @@ fix unchecked error
 use metrixConfig instead initialize
 ## 0.13.1
 fix bug appSecret
+## 0.14.1
+add user attribute and metric
