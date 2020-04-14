@@ -12,3 +12,7 @@ use metrixConfig instead initialize
 fix bug appSecret
 ## 0.14.1
 add user attribute and metric
+## 0.14.2
+use new ios version
+## 0.14.8
+use new Android version
