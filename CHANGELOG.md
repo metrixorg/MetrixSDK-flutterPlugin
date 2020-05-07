@@ -16,3 +16,5 @@ add user attribute and metric
 use new ios version
 ## 0.14.8
 use new Android version
+## 0.15.0
+use new Android version
