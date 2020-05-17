@@ -21,7 +21,6 @@ class _MyAppState extends State<MyApp> {
 //    config.store = "google play";
 //    config.trackerToken = "rtret";
     config.sessionIdCallback = ss;
-    config.deeplinkCallback = (sesid) => {print("deeplink: " + sesid)};
     config.userIdCallback = (sesid) => {print("userid: " + sesid)};
     config.attributionCallback = (sesid) => {print("att: " + jsonEncode(sesid))};
     config.firebaseAppId = "1:730143097783:android:227c981a44d0492eaa9e32";
@@ -48,9 +47,7 @@ class _MyAppState extends State<MyApp> {
   void press() {
     Map<String, String> attr = new Map();
     attr["phone"] = "09121234123";
-    Map<String, double> metric = new Map();
-    metric["length"] = 43.3;
 
-    Metrix.newEvent("dmldm", attr, metric);
+    Metrix.newEvent("dmldm", attr);
   }
 }

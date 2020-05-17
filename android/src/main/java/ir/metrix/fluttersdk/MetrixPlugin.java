@@ -58,8 +58,7 @@ public class MetrixPlugin implements MethodCallHandler {
                 try {
                     settings = new JSONObject(call.arguments.toString());
 
-                    MetrixConfig metrixConfig = new MetrixConfig(activity.getApplication(),
-                            settings.getString("appId"));
+                    MetrixConfig metrixConfig = new MetrixConfig(activity.getApplication(), settings.getString("appId"));
 
                     if (settings.has("appSecret") && settings.get("appSecret") != JSONObject.NULL) {
                         JSONObject appSecret = settings.getJSONObject("appSecret");
@@ -76,9 +75,11 @@ public class MetrixPlugin implements MethodCallHandler {
                                     (appSecret.getLong("info4")));
                         }
                     }
+                    
                     if (settings.has("locationListening") && settings.get("locationListening") != JSONObject.NULL) {
                         metrixConfig.setLocationListening(settings.getBoolean("locationListening"));
                     }
+                    
                     if (settings.has("lunchDeferredDeeplink") && settings.get("lunchDeferredDeeplink") != JSONObject.NULL) {
                         lunchDeferredDeeplink = settings.getBoolean("lunchDeferredDeeplink");
                     }
@@ -94,6 +95,7 @@ public class MetrixPlugin implements MethodCallHandler {
                     if (settings.has("eventMaxCount") && settings.get("eventMaxCount") != JSONObject.NULL) {
                         metrixConfig.setEventMaxCount(settings.getInt("eventMaxCount"));
                     }
+                    
                     if (settings.has("eventUploadPeriodMillis") && settings.get("eventUploadPeriodMillis") != JSONObject.NULL) {
                         metrixConfig.setEventUploadPeriodMillis(settings.getInt("eventUploadPeriodMillis"));
                     }
@@ -105,18 +107,19 @@ public class MetrixPlugin implements MethodCallHandler {
                     if (settings.has("loggingEnabled") && settings.get("loggingEnabled") != JSONObject.NULL) {
                         metrixConfig.enableLogging(settings.getBoolean("loggingEnabled"));
                     }
+                    
                     if (settings.has("logLevel") && settings.get("logLevel") != JSONObject.NULL) {
                         metrixConfig.setLogLevel(settings.getInt("logLevel"));
                     }
 
                     if (settings.has("flushEventsOnClose") && settings.get("flushEventsOnClose") != JSONObject.NULL) {
                         metrixConfig.setFlushEventsOnClose(settings.getBoolean("flushEventsOnClose"));
-
                     }
 
                     if (settings.has("trackerToken") && settings.get("trackerToken") != JSONObject.NULL) {
                         metrixConfig.setDefaultTrackerToken(settings.getString("trackerToken"));
                     }
+                    
                     if (settings.has("firebaseAppId") && settings.get("firebaseAppId") != JSONObject.NULL) {
                         metrixConfig.setFirebaseAppId(settings.getString("firebaseAppId").replace("_", ":"));
                     }
@@ -139,6 +142,7 @@ public class MetrixPlugin implements MethodCallHandler {
                             }
                         }
                     });
+
                     metrixConfig.setOnSessionIdListener(new OnSessionIdListener() {
                         @Override
                         public void onReceiveSessionId(final String s) {
@@ -166,6 +170,7 @@ public class MetrixPlugin implements MethodCallHandler {
                             }
                         }
                     });
+
                     metrixConfig.setOnDeeplinkResponseListener(new OnDeeplinkResponseListener() {
                         @Override
                         public boolean launchReceivedDeeplink(final Uri uri) {
@@ -194,27 +199,32 @@ public class MetrixPlugin implements MethodCallHandler {
                 }
 
                 break;
+            
             case "setDeferredDeeplinkMethod":
                 deferredDeeplinkResult = result;
                 break;
+            
             case "setAttributionMethod":
                 attributionResult = result;
                 break;
+            
             case "setUserIdMethod":
                 userIdResult = result;
                 break;
+            
             case "setSessionIdMethod":
                 sessionIdResult = result;
                 break;
+            
             case "newEvent": {
                 String slug = call.argument("slug");
                 Map<String, String> attr = call.argument("attributes");
-                Map<String, Double> metrics = call.argument("metrics");
 
-                Metrix.getInstance().newEvent(slug, attr, metrics);
+                Metrix.getInstance().newEvent(slug, attr);
                 result.success(null);
                 break;
             }
+            
             case "newRevenue": {
                 String slug = call.argument("slug");
                 Double amount = call.argument("amount");
@@ -238,18 +248,13 @@ public class MetrixPlugin implements MethodCallHandler {
                 break;
             }
 
-            case "addUserMetrics": {
-                Map<String, Double> metrics = call.argument("metrics");
-                Metrix.getInstance().addUserMetrics(metrics);
-                result.success(null);
-                break;
-            }
             case "appWillOpenUrl": {
                 String uri = call.argument("uri");
                 Metrix.getInstance().appWillOpenUrl(Uri.parse(uri));
                 result.success(null);
                 break;
             }
+            
             default:
                 result.notImplemented();
                 break;

@@ -36,12 +36,10 @@ class Metrix {
     return;
   }
 
-  static Future<void> newEvent(String slug, Map<String, String> attributes,
-      Map<String, double> metrics) async {
+  static Future<void> newEvent(String slug, Map<String, String> attributes) async {
     await _channel.invokeMethod('newEvent', <String, dynamic>{
       'slug': slug,
       'attributes': attributes,
-      'metrics': metrics
     });
     return;
   }
@@ -50,13 +48,6 @@ class Metrix {
   static Future<void> addUserAttributes(Map<String, String> attributes) async {
     await _channel.invokeMethod('addUserAttributes', <String, dynamic>{
       'attributes': attributes
-    });
-    return;
-  }
-
-  static Future<void> addUserMetrics(Map<String, double> metrics) async {
-    await _channel.invokeMethod('addUserMetrics', <String, dynamic>{
-       'metrics': metrics
     });
     return;
   }
