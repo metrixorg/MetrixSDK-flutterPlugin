@@ -18,3 +18,4 @@ use new ios version
 use new Android version
 ## 0.15.0
 use new Android version
+\n## 0.15.2\nuse new Android version
