@@ -120,8 +120,14 @@ public class MetrixPlugin implements MethodCallHandler {
                         metrixConfig.setDefaultTrackerToken(settings.getString("trackerToken"));
                     }
                     
-                    if (settings.has("firebaseAppId") && settings.get("firebaseAppId") != JSONObject.NULL) {
-                        metrixConfig.setFirebaseAppId(settings.getString("firebaseAppId").replace("_", ":"));
+                    if (settings.has("firebaseAppId") 
+                        && settings.get("firebaseAppId") != JSONObject.NULL
+                        && settings.has("firebaseProjectId") 
+                        && settings.get("firebaseProjectId") != JSONObject.NULL
+                        && settings.has("firebaseApiKey") 
+                        && settings.get("firebaseApiKey") != JSONObject.NULL) {
+                        metrixConfig.setFirebaseId(settings.getString("firebaseAppId").replace("_", ":"), 
+                        settings.getString("firebaseProjectId"), settings.getString("firebaseApiKey"));
                     }
 
                     if (settings.has("store") && settings.get("store") != JSONObject.NULL) {
