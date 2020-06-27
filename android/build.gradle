@@ -1,5 +1,5 @@
 group 'ir.metrix.fluttersdk'
-version '0.15.2'
+version '0.15.4'
 
 rootProject.allprojects {
     repositories {
@@ -31,5 +31,5 @@ android {
     }
 }
 dependencies {
-    implementation 'ir.metrix:flutter:0.15.2'
+    implementation 'ir.metrix:flutter:0.15.4'
 }

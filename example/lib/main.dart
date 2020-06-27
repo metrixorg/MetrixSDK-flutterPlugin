@@ -23,7 +23,7 @@ class _MyAppState extends State<MyApp> {
     config.sessionIdCallback = ss;
     config.userIdCallback = (sesid) => {print("userid: " + sesid)};
     config.attributionCallback = (sesid) => {print("att: " + jsonEncode(sesid))};
-    config.firebaseAppId = "1:730143097783:android:227c981a44d0492eaa9e32";
+    config.setFirebaseId("<appId>", "<projectId>", "<apiKey>");
     config.setAppSecret(1, 2, 3, 4, 5);
     Metrix.onCreate(config);
   }

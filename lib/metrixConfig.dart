@@ -8,7 +8,9 @@ class MetrixConfig {
   bool locationListening;
   bool lunchDeferredDeeplink;
   String store;
-  String firebaseAppId;
+  String _firebaseAppId;
+  String _firebaseProjectId;
+  String _firebaseApiKey;
   int eventUploadThreshold;
 
   int eventUploadMaxBatchSize;
@@ -39,6 +41,12 @@ class MetrixConfig {
     this._info4 = info4;
   }
 
+  void setFirebaseId(String firebaseAppId, String firebaseProjectId, String firebaseApiKey) {
+    this._firebaseAppId = firebaseAppId;
+    this._firebaseProjectId = firebaseProjectId;
+    this._firebaseAppId = firebaseApiKey;
+  }
+
   MetrixConfig(this.appId);
 
   Map<String, dynamic> toJson() => {
@@ -60,7 +68,9 @@ class MetrixConfig {
         'logLevel': logLevel,
         'trackerToken': trackerToken,
         'loggingEnabled': loggingEnabled,
-        'firebaseAppId': firebaseAppId != null ? "${firebaseAppId.replaceAll(":","_")}" : null,
+        'firebaseAppId': _firebaseAppId != null ? "${_firebaseAppId.replaceAll(":","_")}" : null,
+        'firebaseProjectId': _firebaseProjectId,
+        'firebaseApiKey': _firebaseApiKey,
         'lunchDeferredDeeplink': lunchDeferredDeeplink,
         'flushEventsOnClose': flushEventsOnClose,
       };
