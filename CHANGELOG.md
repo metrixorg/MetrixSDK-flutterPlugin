@@ -23,3 +23,5 @@ use new Android version
 ## 0.15.5
 use new Android version
 change firebaseId api
+## 0.15.6
+use new Android version
