@@ -1,11 +1,9 @@
 group 'ir.metrix.fluttersdk'
-version '0.15.4'
+version '0.16.0'
 
 rootProject.allprojects {
     repositories {
-        maven {
-            url 'https://dl.bintray.com/metrixorg/maven'
-        }
+        mavenCentral()
     }
 }
 
